@@ -2,7 +2,6 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import rollupCommonjs from "@rollup/plugin-commonjs";
-import { esbuildPlugin } from "@web/dev-server-esbuild";
 import { fromRollup } from "@web/dev-server-rollup";
 import { puppeteerLauncher } from "@web/test-runner-puppeteer";
 
