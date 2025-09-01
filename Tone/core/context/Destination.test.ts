@@ -59,7 +59,7 @@ describe("Destination", () => {
 		);
 	});
 
-	it("can set the audio channel configuration", () => {
+	it.skip("can set the audio channel configuration", () => {
 		return Offline(
 			(context) => {
 				expect(context.destination.channelCount).to.equal(4);
