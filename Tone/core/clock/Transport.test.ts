@@ -302,6 +302,36 @@ describe("Transport", () => {
 				});
 			}, 0.2);
 		});
+
+		it("invokes the first callback time when the scheduled time is a non-integer tick time", async () => {
+			let wasCalled = false;
+			await Offline(({ transport }) => {
+				// choose a value which is not cleanly representable as ticks
+				const problemValue = Time(100, "i").toSeconds() + 0.01;
+				transport.seconds = problemValue;
+				transport.schedule(() => {
+					wasCalled = true;
+				}, problemValue);
+				transport.start();
+			}, 0.2);
+			expect(wasCalled).to.be.true;
+		});
+
+		it("setting the same ticks value twice does not emit twice", async () => {
+			await Offline(({ transport }) => {
+				let callCount = 0;
+				transport.on("ticks", () => {
+					callCount++;
+				});
+				transport.ticks = 100;
+				expect(transport.ticks).to.equal(100);
+				expect(callCount).to.equal(1);
+
+				// set it to the same value again has no change
+				transport.ticks = 100;
+				expect(callCount).to.equal(1);
+			}, 0.1);
+		});
 	});
 
 	context("state", () => {
