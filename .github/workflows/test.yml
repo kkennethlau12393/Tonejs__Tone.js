@@ -11,10 +11,6 @@ on:
             - dev
             - main
 
-permissions:
-    contents: read
-    id-token: write
-
 jobs:
     test-conventional-commit:
         name: Validate PR title
@@ -175,6 +171,7 @@ jobs:
                 test-readme,
                 test-integrations,
             ]
+
         # not on PRs
         if: github.event_name != 'pull_request'
         env:
@@ -195,9 +192,9 @@ jobs:
               run: npm run increment
             - name: Publish @next
               # dev branch gets published with @next tag
-              run: npm publish --tag next
+              run: npm publish --tag next --provenance
               if: ${{ github.ref == 'refs/heads/dev' }}
             - name: Publish @latest
               # main branch gets published with @latest tag
-              run: npm publish
+              run: npm publish --provenance
               if: ${{ github.ref == 'refs/heads/main' }}
